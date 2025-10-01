@@ -1,0 +1,63 @@
+---
+title: "Homework3"
+author: "Bo Han"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Website Redesign Recommendation
+```{r, message=F}
+library(tidyverse)
+library(colorfindr)
+
+df = read_csv("homework3_data.csv")
+df = df %>%
+  mutate(design=factor(design, levels=c(0,1)))
+
+# Set color palette from Target company
+palette = get_colors("Target Palette Screenshot.png")
+cols = make_palette(palette[1:100, ])
+cols
+```
+
+#### Our Recommendation
+The company should commit to redesigning the web site based on the criteria for success that they laid out as it will increase sales by at least $1.80 per customer.
+
+#### Support
+```{r}
+df %>%
+  ggplot(aes(x=sales, fill=design)) +
+  geom_histogram(bins=10, position="identity", alpha=0.8) +
+  scale_fill_manual(values=c("#AC504A", "#8B8B8B")) +
+  labs(title="Sales by Website Design", x="Sales", y="Count", fill="Website Design")+
+  theme_minimal()
+```
+
+```{r}
+df %>%
+  ggplot(aes(x=design, y=sales, fill=design)) +
+  geom_boxplot() +
+  scale_fill_manual(values=c("#AC504A", "#8B8B8B")) +
+  labs(title="Sales by Website Design", x="Website Design", y="Sales",
+       fill="Website Design") +
+  theme_minimal()
+```
+
+```{r}
+table = df %>%
+  group_by(design) %>%
+  summarise(count=n(), mean_sales=mean(sales), sd_sales=sd(sales))
+table
+
+est_diff = table$mean_sales[2] - table$mean_sales[1]
+est_diff
+```
+
+There is an estimated increase in sales by $`r est_diff` if the website redesign is done. Thus, this would lead us to the conclusion that the redesign would lead to an average increase in sales of at least 1.80 dollars per customer.
+
+#### Alternative Statement
+The company should NOT commit to redesigning the web site based on the criteria for success that they laid out, even though the data suggests it will increase sales by at least $1.80 per customer. This may be due to changes in sales purely due to seasonality (the website got redesigned during holiday season). Also, the company products could have improved, increasing customer satisfaction through the products themselves, rather than the website design.
