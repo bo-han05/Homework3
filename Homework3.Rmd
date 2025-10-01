@@ -51,7 +51,7 @@ df %>%
 ```{r}
 table = df %>%
   group_by(design) %>%
-  summarise(count=n(), mean_sales=mean(sales), sd_sales=sd(sales))
+  summarise(count=n(), mean_sales=mean(sales))
 table
 
 est_diff = table$mean_sales[2] - table$mean_sales[1]
