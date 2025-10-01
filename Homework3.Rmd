@@ -28,7 +28,7 @@ cols
 The company should commit to redesigning the web site based on the criteria for success that they laid out as it will increase sales by at least $1.80 per customer.
 
 #### Support
-```{r}
+```{r, echo=FALSE, fig.align='center', out.extra='keepaspectratio'}
 df %>%
   ggplot(aes(x=sales, fill=design)) +
   geom_histogram(bins=10, position="identity", alpha=0.8) +
